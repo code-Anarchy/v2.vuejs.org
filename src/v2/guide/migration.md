@@ -186,7 +186,7 @@ When including an `index`, the argument order for arrays used to be `(index, val
 
 ### `v-for` Argument Order for Objects <sup>changed</sup>
 
-When including a `key`, the argument order for objects used to be `(key, value)`. It is now `(value, key)` to be more consistent with common object iterators such as lodash's.
+When including a property name/key, the argument order for objects used to be `(name, value)`. It is now `(value, name)` to be more consistent with common object iterators such as lodash's.
 
 {% raw %}
 <div class="upgrade-path">
@@ -210,15 +210,15 @@ The implicitly assigned `$index` and `$key` variables have been removed in favor
 
 `track-by` has been replaced with `key`, which works like any other attribute: without the `v-bind:` or `:` prefix, it is treated as a literal string. In most cases, you'd want to use a dynamic binding which expects a full expression instead of a key. For example, in place of:
 
-``` html
+{% codeblock lang:html %}
 <div v-for="item in items" track-by="id">
-```
+{% endcodeblock %}
 
 You would now write:
 
-``` html
+{% codeblock lang:html %}
 <div v-for="item in items" v-bind:key="item.id">
-```
+{% endcodeblock %}
 
 {% raw %}
 <div class="upgrade-path">
@@ -364,7 +364,7 @@ computed: {
 Or with component methods:
 
 ``` js
-template: '<p>message: {{ getTimeMessage }}</p>',
+template: '<p>message: {{ getTimeMessage() }}</p>',
 methods: {
   getTimeMessage: function () {
     return Date.now() + this.message
@@ -400,9 +400,9 @@ For enumerated attributes, in addition to the falsy values above, the string `"f
 
 When used on a component, `v-on` now only listens to custom events `$emit`ted by that component. To listen for a native DOM event on the root element, you can use the `.native` modifier. For example:
 
-``` html
+{% codeblock lang:html %}
 <my-component v-on:click.native="doSomething"></my-component>
-```
+{% endcodeblock %}
 
 {% raw %}
 <div class="upgrade-path">
@@ -602,9 +602,9 @@ As you can see, `v-model`'s two-way binding doesn't make sense here. Setting `st
 
 Instead, you should use an array of __objects__ so that `v-model` can update the field on the object. For example:
 
-``` html
+{% codeblock lang:html %}
 <input v-for="obj in objects" v-model="obj.str">
-```
+{% endcodeblock %}
 
 {% raw %}
 <div class="upgrade-path">
@@ -644,7 +644,7 @@ Since `v-ref` is no longer a directive, but a special attribute, it can also be 
 <p v-for="item in items" v-bind:ref="'item' + item.id"></p>
 ```
 
-Previously, `v-el`/`v-ref` combined with `v-for` would produce an array of elements/components, because there was no way to give each item a unique name. You can still achieve this behavior by given each item the same `ref`:
+Previously, `v-el`/`v-ref` combined with `v-for` would produce an array of elements/components, because there was no way to give each item a unique name. You can still achieve this behavior by giving each item the same `ref`:
 
 ``` html
 <p v-for="item in items" ref="items"></p>
@@ -709,7 +709,7 @@ The `.literal` modifier has been removed, as the same can be easily achieved by 
 
 For example, you can update:
 
-``` js
+``` html
 <p v-my-directive.literal="foo bar baz"></p>
 ```
 
@@ -786,7 +786,7 @@ Vue.config.keyCodes.f1 = 112
 
 `$dispatch` and `$broadcast` have been removed in favor of more explicitly cross-component communication and more maintainable state management solutions, such as [Vuex](https://github.com/vuejs/vuex).
 
-The problem is event flows that depend on a component's tree structure can be hard to reason about and very brittle when the tree becomes large. It doesn't scale well and we don't want to set you up for pain later. `$dispatch` and `$broadcast` also do not solve communication between sibling components.
+The problem is event flows that depend on a component's tree structure can be hard to reason about and are very brittle when the tree becomes large. They don't scale well and only set you up for pain later. `$dispatch` and `$broadcast` also do not solve communication between sibling components.
 
 One of the most common uses for these methods is to communicate between a parent and its direct children. In these cases, you can actually [listen to an `$emit` from a child with `v-on`](components.html#Form-Input-Components-using-Custom-Events). This allows you to keep the convenience of events with added explicitness.
 
@@ -990,9 +990,9 @@ computed: {
 
 You can even order by multiple columns:
 
-``` js
+{% codeblock lang:js %}
 _.orderBy(this.users, ['name', 'last_login'], ['asc', 'desc'])
-```
+{% endcodeblock %}
 
 {% raw %}
 <div class="upgrade-path">
@@ -1070,9 +1070,9 @@ function pluralizeKnife (count) {
 
 For a very naive implementation, you could do something like this:
 
-``` js
+{% codeblock lang:js %}
 '$' + price.toFixed(2)
-```
+{% endcodeblock %}
 
 In many cases though, you'll still run into strange behavior (e.g. `0.035.toFixed(2)` rounds up to `0.04`, but `0.045` rounds down to `0.04`). To work around these issues, you can use the [`accounting`](http://openexchangerates.github.io/accounting.js/) library to more reliably format currencies.
 
@@ -1089,17 +1089,17 @@ Some users have enjoyed using two-way filters with `v-model` to create interesti
 
 As an example, we'll now walk the migration of a two-way currency filter:
 
-<iframe width="100%" height="300" src="https://jsfiddle.net/chrisvfritz/6744xnjk/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe src="https://codesandbox.io/embed/github/vuejs/v2.vuejs.org/tree/master/src/v2/examples/vue-10-two-way-currency-filter?codemirror=1&hidedevtools=1&hidenavigation=1&theme=light" style="width:100%; height:300px; border:0; border-radius: 4px; overflow:hidden;" title="vue-20-template-compilation" allow="geolocation; microphone; camera; midi; vr; accelerometer; gyroscope; payment; ambient-light-sensor; encrypted-media; usb" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
 
-It mostly works well, but the delayed state updates can cause strange behavior. For example, click on the `Result` tab and try entering `9.999` into one of those inputs. When the input loses focus, its value will update to `$10.00`. When looking at the calculated total however, you'll see that `9.999` is what's stored in our data. The version of reality that the user sees is out of sync!
+It mostly works well, but the delayed state updates can cause strange behavior. For example, try entering `9.999` into one of those inputs. When the input loses focus, its value will update to `$10.00`. When looking at the calculated total however, you'll see that `9.999` is what's stored in our data. The version of reality that the user sees is out of sync!
 
 To start transitioning towards a more robust solution using Vue 2.0, let's first wrap this filter in a new `<currency-input>` component:
 
-<iframe width="100%" height="300" src="https://jsfiddle.net/chrisvfritz/943zfbsh/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe src="https://codesandbox.io/embed/github/vuejs/v2.vuejs.org/tree/master/src/v2/examples/vue-10-two-way-currency-filter-v2?codemirror=1&hidedevtools=1&hidenavigation=1&theme=light" style="width:100%; height:300px; border:0; border-radius: 4px; overflow:hidden;" title="vue-20-template-compilation" allow="geolocation; microphone; camera; midi; vr; accelerometer; gyroscope; payment; ambient-light-sensor; encrypted-media; usb" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
 
 This allows us add behavior that a filter alone couldn't encapsulate, such as selecting the content of an input on focus. Now the next step will be to extract the business logic from the filter. Below, we pull everything out into an external [`currencyValidator` object](https://gist.github.com/chrisvfritz/5f0a639590d6e648933416f90ba7ae4e):
 
-<iframe width="100%" height="300" src="https://jsfiddle.net/chrisvfritz/9c32kev2/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe src="https://codesandbox.io/embed/github/vuejs/v2.vuejs.org/tree/master/src/v2/examples/vue-10-two-way-currency-filter-v3?codemirror=1&hidedevtools=1&hidenavigation=1&theme=light" style="width:100%; height:300px; border:0; border-radius: 4px; overflow:hidden;" title="vue-20-template-compilation" allow="geolocation; microphone; camera; midi; vr; accelerometer; gyroscope; payment; ambient-light-sensor; encrypted-media; usb" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
 
 This increased modularity not only makes it easier to migrate to Vue 2, but also allows currency parsing and formatting to be:
 
@@ -1110,7 +1110,7 @@ Having this validator extracted out, we've also more comfortably built it up int
 
 We're still limited however, by filters and by Vue 1.0 in general, so let's complete the upgrade to Vue 2.0:
 
-<iframe width="100%" height="300" src="https://jsfiddle.net/chrisvfritz/1oqjojjx/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe src="https://codesandbox.io/embed/github/vuejs/v2.vuejs.org/tree/master/src/v2/examples/vue-20-two-way-currency-filter?codemirror=1&hidedevtools=1&hidenavigation=1&theme=light" style="width:100%; height:300px; border:0; border-radius: 4px; overflow:hidden;" title="vue-20-template-compilation" allow="geolocation; microphone; camera; midi; vr; accelerometer; gyroscope; payment; ambient-light-sensor; encrypted-media; usb" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
 
 You may notice that:
 
@@ -1365,9 +1365,9 @@ Instead, retrieve reactive data directly.
 
 Use the native DOM API:
 
-``` js
+{% codeblock lang:js %}
 myElement.appendChild(vm.$el)
-```
+{% endcodeblock %}
 
 {% raw %}
 <div class="upgrade-path">
@@ -1380,9 +1380,9 @@ myElement.appendChild(vm.$el)
 
 Use the native DOM API:
 
-``` js
+{% codeblock lang:js %}
 myElement.parentNode.insertBefore(vm.$el, myElement)
-```
+{% endcodeblock %}
 
 {% raw %}
 <div class="upgrade-path">
@@ -1395,15 +1395,15 @@ myElement.parentNode.insertBefore(vm.$el, myElement)
 
 Use the native DOM API:
 
-``` js
+{% codeblock lang:js %}
 myElement.parentNode.insertBefore(vm.$el, myElement.nextSibling)
-```
+{% endcodeblock %}
 
 Or if `myElement` is the last child:
 
-``` js
+{% codeblock lang:js %}
 myElement.parentNode.appendChild(vm.$el)
-```
+{% endcodeblock %}
 
 {% raw %}
 <div class="upgrade-path">
@@ -1416,9 +1416,9 @@ myElement.parentNode.appendChild(vm.$el)
 
 Use the native DOM API:
 
-``` js
+{% codeblock lang:js %}
 vm.$el.remove()
-```
+{% endcodeblock %}
 
 {% raw %}
 <div class="upgrade-path">

@@ -1,69 +1,236 @@
-site_description: "Vue.js - The Progressive JavaScript Framework"
+site_description: Vue.js - The Progressive JavaScript Framework
 google_analytics: UA-46852172-1
 root_domain: vuejs.org
-vue_version: 2.5.16
-
-special_sponsors:
-  - url: https://stdlib.com
-    img: stdlib.png
-  - url: https://www.bitsrc.io/?utm_source=vue&utm_medium=vue&utm_campaign=vue&utm_term=vue&utm_content=vue
-    img: bit.png
-    wide_img: bit-wide.png
-    big_width: 120px
-    big_height: 120px
-
-platinum_sponsors:
-  - url: http://tooltwist.com/
-    img: tooltwist.png
-  - url: https://vueschool.io/?utm_source=Vuejs.org&utm_medium=Banner&utm_campaign=Sponsored%20Banner&utm_content=V1
-    img: vueschool.png
-  - url: https://vehikl.com/
-    img: vehikl.png
-
-gold_sponsors:
-  - url: https://laravel.com
-    img: laravel.png
-  - url: https://htmlburger.com
-    img: htmlburger.png
-  - url: https://chaitin.cn/en/
-    img: chaitin.png
-  - url: https://www.frontenddeveloperlove.com/
-    img: frontend-love.png
-  - url: https://onsen.io/vue/
-    img: onsen-ui.png
-  - url: https://vuetifyjs.com
-    img: vuetify.png
-  - url: https://neds.com.au/
-    img: neds.png
-  - url: https://hackr.io/tutorials/learn-vue-js
-    img: hackr-io.png
-  - url: https://icons8.com/
-    img: icons8.png
-  - url: https://vuejobs.com/?ref=vuejs
-    img: vuejobs.png
-  - url: https://codepilot.ai
-    img: codepilot.png
-  - url: https://teamextension.io/
-    img: teamextension.png
-  - url: http://aaha.co/
-    img: aaha.png
-  - url: https://www.valuecoders.com
-    img: valuecoders.png
-  - url: https://www.nsoft.com/careers/
-    img: nsoft.png
-  - url: https://www.vuemastery.com/
+vue_version: 2.7.0
+# START SPONSORS
+special:
+  - name: HBuilder
+    url: https://www.dcloud.io/hbuilderx.html?hmsr=vue-en&hmpl=&hmcu=&hmkw=&hmci=
+    img: hbuilder.png
+    description: An IDE for Vue
+platinum:
+  - name: VueMastery
+    url: https://www.vuemastery.com/
     img: vuemastery.png
-
-silver_sponsors:
-  - url: https://dopamine.bg/
-    img: dopamine.png
-
-bronze_sponsors:
-  - url: http://tighten.co/
-    img: http://i.imgur.com/T7fQYLT.png
-  - url: https://alligator.io
-    img: https://alligator.io/images/alligator-logo.svg
-  - url: https://www.accelebrate.com/
-    img: https://www.accelebrate.com/assets/images/accelebrate_logo@2x.png
-  - url: https://pullstring.com
-    img: https://i.imgur.com/hQHW6TB.png
+  - name: VueSchool
+    url: >-
+      https://vueschool.io/?utm_source=Vuejs.org&utm_medium=Banner&utm_campaign=Sponsored%20Banner&utm_content=V1
+    img: vueschool.png
+  - name: Vehikl
+    url: https://vehikl.com/
+    img: vehikl.png
+  - name: Passionate People
+    url: https://passionatepeople.io/
+    img: passionate_people.png
+  - name: Storyblok
+    url: https://www.storyblok.com
+    img: storyblok.png
+  - name: Ionic
+    url: >-
+      https://ionicframework.com/vue?utm_source=partner&utm_medium=referral&utm_campaign=vuesponsorship&utm_content=vuedocs
+    img: ionic.png?v2
+  - name: Nuxt
+    url: https://nuxtjs.org/
+    img: nuxt.png
+  - name: Refurbed
+    url: https://www.refurbed.org/?utm_source=vuejs
+    img: refurbed.png
+  - name: ButterCMS
+    url: >-
+      https://buttercms.com/vuejs-cms/?utm_source=vuejs.org&utm_medium=banner&utm_campaign=sponsorship
+    img: buttercms.svg
+  - name: Sanofi
+    url: https://www.sanofi.com/
+    img: sanofi.png
+  - name: CodeDict
+    url: https://code-dict.com
+    img: codedict.svg
+  - name: vuejs.de Conf
+    url: >-
+      https://conf.vuejs.de/?utm_source=vuejs-vite&utm_medium=referral&utm_campaign=sponsoring
+    img: vuejs_de_conf.svg
+platinum_china:
+  - name: HBuilder
+    url: https://www.dcloud.io/hbuilderx.html?hmsr=vue-en&hmpl=&hmcu=&hmkw=&hmci=
+    img: hbuilder.png
+  - name: 稀土掘金技术社区
+    url: https://juejin.cn/frontend?utm_source=vue&utm_campaign=sponsor
+    img: xitujuejinjishushequ.png
+gold:
+  - name: Laravel
+    url: https://laravel.com
+    img: laravel.png
+  - name: HTML Burger
+    url: https://htmlburger.com
+    img: html_burger.png
+  - name: Neds
+    url: https://neds.com.au/
+    img: neds.png
+  - name: Tidelift
+    url: https://tidelift.com/subscription/npm/vue
+    img: tidelift.png
+  - name: Firestick Tricks
+    url: https://www.firesticktricks.com/
+    img: firestick_tricks.png
+  - name: Intygrate
+    url: https://intygrate.com/
+    img: intygrate.png
+  - name: Bacancy Technology
+    url: https://www.bacancytechnology.com/hire-vuejs-developer
+    img: bacancy_technology.png
+  - name: Y8
+    url: https://www.y8.com/
+    img: y8.png
+  - name: DevExpress
+    url: https://js.devexpress.com/
+    img: devexpress.png
+  - name: FASTCODING Inc
+    url: 'https://fastcoding.jp/javascript/ '
+    img: fastcoding_inc.svg
+  - name: VPSServer.com
+    url: https://www.vpsserver.com
+    img: vpsserver_com.png
+  - name: LINE Corporation
+    url: https://linecorp.com
+    img: line_corporation.png
+  - name: PLAID, Inc.
+    url: https://plaid.co.jp/
+    img: plaid__inc_.svg
+  - name: EMQ
+    url: https://www.emqx.com
+    img: emq.png
+  - name: Onyx Gaming Limited
+    url: https://www.aceonlinecasino.co.uk
+    img: onyx_gaming_limited.svg
+  - name: Lendio
+    url: http://www.lendio.com
+    img: lendio.png
+  - name: Fenêtre Online Solutions
+    url: https://www.fenetre.nl/
+    img: fen_tre_online_solutions.svg
+  - name: MyEtherWallet Inc
+    url: https://www.myetherwallet.com
+    img: myetherwallet_inc.png
+  - name: Barrage
+    url: https://www.barrage.net
+    img: barrage.png
+  - name: Ant Design Vue
+    url: https://antdv.com
+    img: ant_design_vue.png
+  - name: Lemon Law
+    url: https://lemonlaw.site
+    img: lemon_law.png
+  - name: MQTT X
+    url: https://mqttx.app
+    img: mqtt_x.png
+  - name: Crisp
+    url: https://crisp.chat/en/
+    img: crisp.png
+  - name: Cypress.io
+    url: https://cypress.io
+    img: cypress_io.svg
+  - name: QuickBooks Tool Hub
+    url: https://quickbookstoolhub.com
+    img: quickbooks_tool_hub.png
+  - name: Snyk
+    url: https://snyk.co/vuejs
+    img: snyk.png?v2
+  - name: Handsontable - JavaScript Data Grid
+    url: https://handsontable.com/
+    img: handsontable___javascript_data_grid.svg
+  - name: 1Tool
+    url: https://www.1tool.com
+    img: 1tool.png
+silver:
+  - name: Draxlr
+    url: https://www.draxlr.com
+    img: draxlr.svg
+  - name: iSolutions UK Limited
+    url: https://www.thecasinodb.com
+    img: isolutions_uk_limited.png
+  - name: Team Extension North America Inc
+    url: https://teamextension.io
+    img: team_extension_north_america_inc.png
+  - name: Free Bets US
+    url: https://freebets.us
+    img: free_bets_us.png
+  - name: Doximity
+    url: https://technology.doximity.com/
+    img: doximity.png
+  - name: CircleCI
+    url: https://circleci.com/open-source/
+    img: circleci.png
+  - name: Interflora Group
+    url: https://www.interflora.fr
+    img: interflora_group.png
+  - name: Localazy
+    url: >-
+      https://localazy.com/blog/how-to-localize-vuejs-app-with-vue-i18n-and-localazy?utm_source=vuejs&utm_medium=banner&utm_campaign=sponsorships_vuejs&utm_content=logo
+    img: localazy.png
+  - name: AddWeb Solution
+    url: http://addwebsolution.com/
+    img: addweb_solution.png?v2
+  - name: 1394TA
+    url: https://1394ta.org
+    img: 1394ta.png
+bronze:
+  - name: Derek Pollard
+    url: https://polyglotengineer.com/derek.pollard
+    img: derek_pollard.png
+  - name: Earthlink
+    url: https://www.earthlink.ro
+    img: earthlink.png
+  - name: BGASoft
+    url: https://www.bgasoft.com
+    img: bgasoft.png
+  - name: RStudio
+    url: https://rstudio.com
+    img: rstudio.png
+  - name: Custouch Marketing Automation
+    url: http://www.custouch.com
+    img: custouch_marketing_automation.png
+  - name: Darkhorse Analytics
+    url: https://www.darkhorseanalytics.com/
+    img: darkhorse_analytics.png
+  - name: vuejs.de - German Vue Community
+    url: https://vuejs.de
+    img: vuejs_de___german_vue_community.svg
+  - name: Liip AG
+    url: https://www.liip.ch/en
+    img: liip_ag.png
+  - name: Monarch Air Group
+    url: https://monarchairgroup.com
+    img: monarch_air_group.png
+# END SPONSORS
+redirects:
+  '/v2/api/index.html': '/api/'
+  '/v2/guide/index.html': '/guide/introduction.html'
+  '/v2/guide/installation.html': '/guide/quick-start.html'
+  '/v2/guide/instance.html': '/guide/essentials/application.html' # has page redirects
+  '/v2/guide/syntax.html': '/guide/essentials/template-syntax.html'
+  '/v2/guide/computed.html': '/guide/essentials/computed.html' # has page redirects
+  '/v2/guide/class-and-style.html': '/guide/essentials/class-and-style.html'
+  '/v2/guide/conditional.html': '/guide/essentials/conditional.html'
+  '/v2/guide/list.html': '/guide/essentials/list.html'
+  '/v2/guide/events.html': '/guide/essentials/event-handling.html'
+  '/v2/guide/forms.html': '/guide/essentials/forms.html'
+  '/v2/guide/components.html': '/guide/essentials/component-basics.html'
+  '/v2/guide/components-registration.html': '/guide/components/registration.html'
+  '/v2/guide/components-props.html': '/guide/components/props.html' # has page redirects
+  '/v2/guide/components-custom-events.html': '/guide/components/events.html'
+  '/v2/guide/components-slots.html': '/guide/components/slots.html'
+  '/v2/guide/components-dynamic-async.html': '/guide/built-ins/keep-alive.html' # has page redirects
+  '/v2/guide/transitions.html': '/guide/built-ins/transition.html' # has page redirects
+  '/v2/guide/transitioning-state.html': '/guide/extras/animation.html'
+  '/v2/guide/custom-directive.html': '/guide/reusability/custom-directives.html'
+  '/v2/guide/render-function.html': '/guide/extras/render-function.html'
+  '/v2/guide/plugins.html': '/guide/reusability/plugins.html'
+  '/v2/guide/single-file-components.html': '/guide/scaling-up/sfc.html'
+  '/v2/guide/testing.html': '/guide/scaling-up/testing.html'
+  '/v2/guide/typescript.html': '/guide/typescript/overview.html'
+  '/v2/guide/deployment.html': '/guide/best-practices/production-deployment.html'
+  '/v2/guide/routing.html': '/guide/scaling-up/routing.html'
+  '/v2/guide/state-management.html': '/guide/scaling-up/state-management.html'
+  '/v2/guide/ssr.html': '/guide/scaling-up/ssr.html'
+  '/v2/guide/security.html': '/guide/best-practices/security.html'
+  '/v2/guide/reactivity.html': '/guide/extras/reactivity-in-depth.html'

@@ -1,16 +1,16 @@
 ---
 title: TypeScript Support
 type: guide
-order: 404
+order: 403
 ---
 
-> In Vue 2.5.0+ we have greatly improved our type declarations to work with the default object-based API. At the same time it introduces a few changes that require upgrade actions. Read [this blog post](https://medium.com/the-vue-point/upcoming-typescript-changes-in-vue-2-5-e9bd7e2ecf08) for more details.
+> [Vue CLI](https://cli.vuejs.org) provides built-in TypeScript tooling support.
 
 ## Official Declaration in NPM Packages
 
 A static type system can help prevent many potential runtime errors, especially as applications grow. That's why Vue ships with [official type declarations](https://github.com/vuejs/vue/tree/dev/types) for [TypeScript](https://www.typescriptlang.org/) - not only in Vue core, but also for [vue-router](https://github.com/vuejs/vue-router/tree/dev/types) and [vuex](https://github.com/vuejs/vuex/tree/dev/types) as well.
 
-Since these are [published on NPM](https://cdn.jsdelivr.net/npm/vue/types/), and the latest TypeScript knows how to resolve type declarations in NPM packages, this means when installed via NPM, you don't need any additional tooling to use TypeScript with Vue.
+Since these are [published on NPM](https://cdn.jsdelivr.net/npm/vue@2/types/), and the latest TypeScript knows how to resolve type declarations in NPM packages, this means when installed via NPM, you don't need any additional tooling to use TypeScript with Vue.
 
 ## Recommended Configuration
 
@@ -35,7 +35,7 @@ See [TypeScript compiler options docs](https://www.typescriptlang.org/docs/handb
 
 ## Development Tooling
 
-## Project Creation
+### Project Creation
 
 [Vue CLI 3](https://github.com/vuejs/vue-cli) can generate new projects that use TypeScript. To get started:
 
@@ -47,7 +47,7 @@ npm install --global @vue/cli
 vue create my-project-name
 ```
 
-## Editor Support
+### Editor Support
 
 For developing Vue applications with TypeScript, we strongly recommend using [Visual Studio Code](https://code.visualstudio.com/), which provides great out-of-the-box support for TypeScript. If you are using [single-file components](./single-file-components.html) (SFCs), get the awesome [Vetur extension](https://github.com/vuejs/vetur), which provides TypeScript inference inside SFCs and many other great features.
 
@@ -187,3 +187,34 @@ const Component = Vue.extend({
 ```
 
 If you find type inference or member completion isn't working, annotating certain methods may help address these problems. Using the `--noImplicitAny` option will help find many of these unannotated methods.
+
+
+
+## Annotating Props
+
+```ts
+import Vue, { PropType } from 'vue'
+
+interface ComplexMessage {
+  title: string,
+  okMessage: string,
+  cancelMessage: string
+}
+const Component = Vue.extend({
+  props: {
+    name: String,
+    success: { type: String },
+    callback: {
+      type: Function as PropType<() => void>
+    },
+    message: {
+      type: Object as PropType<ComplexMessage>,
+      required: true,
+      validator (message: ComplexMessage) {
+        return !!message.title;
+      }
+    }
+  }
+})
+```
+If you find validator not getting type inference or member completion isn't working, annotating the argument with the expected type may help address these problems.

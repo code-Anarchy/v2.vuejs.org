@@ -6,6 +6,8 @@ order: 101
 
 > This page assumes you've already read the [Components Basics](components.html). Read that first if you are new to components.
 
+<div class="vueschool"><a href="https://vueschool.io/lessons/global-vs-local-components?friend=vuejs" target="_blank" rel="sponsored noopener" title="Free Vue.js Component Registration lesson">Watch a free video lesson on Vue School</a></div>
+
 ## Component Names
 
 When registering a component, it will always be given a name. For example, in the global registration we've seen so far:
@@ -16,7 +18,7 @@ Vue.component('my-component-name', { /* ... */ })
 
 The component's name is the first argument of `Vue.component`.
 
-The name you give a component may depend on where you intend to use it. When using a component directly in the DOM (as opposed to in a string template or [single-file component](single-file-components.html)), we strongly recommend following the [W3C rules](https://www.w3.org/TR/custom-elements/#concepts) for custom tag names (all-lowercase, must contain a hyphen). This helps you avoid conflicts with current and future HTML elements.
+The name you give a component may depend on where you intend to use it. When using a component directly in the DOM (as opposed to in a string template or [single-file component](single-file-components.html)), we strongly recommend following the [W3C rules](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name) for custom tag names (all-lowercase, must contain a hyphen). This helps you avoid conflicts with current and future HTML elements.
 
 You can see other recommendations for component names in the [Style Guide](../style-guide/#Base-component-names-strongly-recommended).
 
@@ -86,7 +88,7 @@ Then define the components you'd like to use in a `components` option:
 
 ```js
 new Vue({
-  el: '#app'
+  el: '#app',
   components: {
     'component-a': ComponentA,
     'component-b': ComponentB
@@ -207,10 +209,14 @@ requireComponent.keys().forEach(fileName => {
   // Get PascalCase name of component
   const componentName = upperFirst(
     camelCase(
-      // Strip the leading `'./` and extension from the filename
-      fileName.replace(/^\.\/(.*)\.\w+$/, '$1')
+      // Gets the file name regardless of folder depth
+      fileName
+        .split('/')
+        .pop()
+        .replace(/\.\w+$/, '')
     )
   )
+
 
   // Register component globally
   Vue.component(

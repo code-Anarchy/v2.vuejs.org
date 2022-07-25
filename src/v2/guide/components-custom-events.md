@@ -6,6 +6,8 @@ order: 103
 
 > This page assumes you've already read the [Components Basics](components.html). Read that first if you are new to components.
 
+<div class="vueschool"><a href="https://vueschool.io/lessons/communication-between-components?friend=vuejs" target="_blank" rel="sponsored noopener" title="Learn how to work with custom events on Vue School">Learn how to work with custom events in a free Vue School lesson</a></div>
+
 ## Event Names
 
 Unlike components and props, event names don't provide any automatic case transformation. Instead, the name of an emitted event must exactly match the name used to listen to that event. For example, if emitting a camelCased event name:
@@ -17,6 +19,7 @@ this.$emit('myEvent')
 Listening to the kebab-cased version will have no effect:
 
 ```html
+<!-- Won't work -->
 <my-component v-on:my-event="doSomething"></my-component>
 ```
 
@@ -57,7 +60,7 @@ Now when using `v-model` on this component:
 
 the value of `lovingVue` will be passed to the `checked` prop. The `lovingVue` property will then be updated when `<base-checkbox>` emits a `change` event with a new value.
 
-<p class="tip">Note that you still have to declare the <code>checked</code> prop in component's <code>props</code> option.</p>
+<p class="tip">Note that you still have to declare the <code>checked</code> prop in the component's <code>props</code> option.</p>
 
 ## Binding Native Events to Components
 
@@ -136,7 +139,7 @@ Now the `<base-input>` component is a **fully transparent wrapper**, meaning it 
 
 In some cases, we may need "two-way binding" for a prop. Unfortunately, true two-way binding can create maintenance issues, because child components can mutate the parent without the source of that mutation being obvious in both the parent and the child.
 
-That's why instead, we recommend emitting events in the pattern of `update:my-prop-name`. For example, in a hypothetical component with a `title` prop, we could communicate the intent of assigning a new value with:
+That's why instead, we recommend emitting events in the pattern of `update:myPropName`. For example, in a hypothetical component with a `title` prop, we could communicate the intent of assigning a new value with:
 
 ```js
 this.$emit('update:title', newTitle)
@@ -156,6 +159,8 @@ For convenience, we offer a shorthand for this pattern with the `.sync` modifier
 ```html
 <text-document v-bind:title.sync="doc.title"></text-document>
 ```
+
+<p class="tip">Note that <code>v-bind</code> with the <code>.sync</code> modifier does <strong>not</strong> work with expressions (e.g. <code>v-bind:title.sync="doc.title + '!'"</code> is invalid). Instead, you must only provide the name of the property you want to bind, similar to <code>v-model</code>.</p>
 
 The `.sync` modifier can also be used with `v-bind` when using an object to set multiple props at once:
 

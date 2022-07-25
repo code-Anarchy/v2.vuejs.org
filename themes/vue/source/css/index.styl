@@ -3,6 +3,9 @@
 @import "_sidebar"
 @import "_sponsors-index"
 @import "_modal"
+@import "_vuemastery-banner"
+@import "_themes"
+@import "_vueschool.styl"
 
 $width = 900px
 $space = 40px
@@ -23,10 +26,17 @@ body
   &.top
     background-color: transparent
     box-shadow: none
-    .logo
-      display: none
+    z-index: ($z-sidebar - 1)
 
-#hero
+.with-v3-banner
+  #mobile-bar .logo
+    display: none !important
+
+#v3-banner
+  display: block
+
+#hero,
+#news
   padding: $space 40px 30px
   background-color: #fff
   .inner
@@ -71,7 +81,39 @@ body
       vertical-align: middle
       margin-right: 15px
 
-#special-sponsor
+#news
+  padding: $space 20px 70px
+  text-align: center
+  p
+    margin-top: 10px
+  a
+    color: $green
+  .newsletter-form
+    position: relative
+    max-width: 550px
+    margin: 0 auto
+    box-sizing: border-box
+  .newsletter-input
+    width: 100%
+    box-sizing: border-box
+    padding: 10px 80px 10px 20px
+    height: 50px
+    border-radius: 50px
+    border: 1px solid #ccc
+    font-size: 16px
+    &:focus
+      outline: none
+      border-color: #42b983
+  .newsletter-button.button
+    position: absolute
+    padding: 4px 20px
+    margin: 0
+    height: calc(100% - 8px)
+    right: 4px
+    top: 4px
+    cursor: pointer
+
+#special
   background-color: #fff
   text-align: center
   padding-bottom: 30px
@@ -79,12 +121,11 @@ body
     margin 0
   a
     color $light
-    margin 8px 0
   a, span, img
     display: inline-block
     vertical-align: middle
   img
-    margin: 0 15px
+    margin: 15px 0 0
 
 #highlights
   background-color: #fff

@@ -14,7 +14,7 @@ This simple example tests whether some text is rendered:
 <template>
   <div>
     <input v-model="username">
-    <div 
+    <div
       v-if="error"
       class="error"
     >
@@ -45,8 +45,9 @@ export default {
 
 ```js
 import { shallowMount } from '@vue/test-utils'
+import Hello from './Hello.vue'
 
-test('Foo', () => {
+test('Hello', () => {
   // render the component
   const wrapper = shallowMount(Hello)
 
@@ -57,9 +58,7 @@ test('Foo', () => {
   expect(wrapper.find('.error').exists()).toBe(true)
 
   // update the name to be long enough
-  wrapper.setData({
-    username: 'Lachlan'
-  })
+  wrapper.setData({ username: 'Lachlan' })
 
   // assert the error has gone away
   expect(wrapper.find('.error').exists()).toBe(false)
@@ -107,7 +106,7 @@ Let's take a look at the component code first:
       {{ message }}
     </div>
     Enter your username: <input v-model="username">
-    <div 
+    <div
       v-if="error"
       class="error"
     >
@@ -146,25 +145,28 @@ And our first attempt at test:
 
 ```js
 import { shallowMount } from '@vue/test-utils'
+import Foo from './Foo.vue'
 
 describe('Foo', () => {
   it('renders a message and responds correctly to user input', () => {
-      const wrapper = shallowMount(Foo, {
-    data: {
-      message: 'Hello World',
-      username: ''
-    }
-  })
+    const wrapper = shallowMount(Foo, {
+      data() {
+        return {
+          message: 'Hello World',
+          username: ''
+        }
+      }
+    })
 
-  // see if the message renders
-  expect(wrapper.find('.message').text()).toEqual('Hello World')
+    // see if the message renders
+    expect(wrapper.find('.message').text()).toEqual('Hello World')
 
-  // assert the error is rendered
-  expect(wrapper.find('.error').exists()).toBeTruthy()
+    // assert the error is rendered
+    expect(wrapper.find('.error').exists()).toBeTruthy()
 
-  // update the `username` and assert error is no longer rendered
-  wrapper.setData({ username: 'Lachlan' })
-  expect(wrapper.find('.error').exists()).toBeFalsy()
+    // update the `username` and assert error is no longer rendered
+    wrapper.setData({ username: 'Lachlan' })
+    expect(wrapper.find('.error').exists()).toBeFalsy()
   })
 })
 ```
@@ -188,7 +190,11 @@ import Foo from './Foo'
 
 const factory = (values = {}) => {
   return shallowMount(Foo, {
-    data: { ...values  }
+    data () {
+      return {
+        ...values
+      }
+    }
   })
 }
 

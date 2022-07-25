@@ -24,7 +24,7 @@ export default {
 Or even used via `<script>` tag in the browser directly:
 
 ```html
-  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/vue@2"></script>
   <script src="https://unpkg.com/my-component"></script>
   ...
   <my-component></my-component>
@@ -39,7 +39,7 @@ Vue already allows components to be written as a single file. Because a Single F
 
 > "Why can't people use my `.vue` file directly? Isn't that the simplest way to share components?"
 
-It's true, you can share `.vue` files directly, and anyone using a [Vue build](https://vuejs.org/v2/guide/installation.html#Explanation-of-Different-Builds) containing the Vue compiler can consume it immediately. Also, the SSR build uses string concatenation as an optimization, so the `.vue` file might be preferred in this scenario (see [Packaging Components for npm > SSR Usage](#SSR-Usage) for details). However, this excludes anyone who wishes to use the component directly in a browser via `<script>` tag, anyone who uses a runtime-only build, or build processes which don't understand what to do with `.vue` files.
+It's true, you can share `.vue` files directly, and anyone using a [Vue build](/v2/guide/installation.html#Explanation-of-Different-Builds) containing the Vue compiler can consume it immediately. Also, the SSR build uses string concatenation as an optimization, so the `.vue` file might be preferred in this scenario (see [Packaging Components for npm > SSR Usage](#SSR-Usage) for details). However, this excludes anyone who wishes to use the component directly in a browser via `<script>` tag, anyone who uses a runtime-only build, or build processes which don't understand what to do with `.vue` files.
 
 Properly packaging your SFC for distribution via npm enables your component to be shared in a way which is ready to use everywhere!
 
@@ -50,7 +50,7 @@ For the purposes of this section, assume the following file structure:
 ```
 package.json
 build/
-   rollup.config.json
+   rollup.config.js
 src/
    wrapper.js
    my-component.vue
@@ -112,11 +112,12 @@ There is no need to write your module multiple times. It is possible to prepare 
     "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/my-component.min.js"
   },
   "devDependencies": {
-    "rollup": "^0.57.1",
-    "rollup-plugin-buble": "^0.19.2",
-    "rollup-plugin-vue": "^3.0.0",
-    "vue": "^2.5.16",
-    "vue-template-compiler": "^2.5.16",
+    "rollup": "^1.17.0",
+    "@rollup/plugin-buble": "^0.21.3",
+    "@rollup/plugin-commonjs": "^11.1.0",
+    "rollup-plugin-vue": "^5.0.1",
+    "vue": "^2.6.10",
+    "vue-template-compiler": "^2.6.10"
     ...
   },
   ...
@@ -125,7 +126,7 @@ There is no need to write your module multiple times. It is possible to prepare 
 
 <p class="tip">Remember, if you have an existing package.json file, it will likely contain a lot more than this one does. This merely illustrates a starting point. Also, the <i>packages</i> listed in devDependencies (not their versions) are the minimum requirements for rollup to create the three separate builds (umd, es, and unpkg) mentioned. As newer versions become available, they should be updated as necessary.</p>
 
-Our changes to package.json are complete. Next, we need a small wrapper to export/auto-install the actual SFC, plus a mimimal Rollup configuration, and we're set!
+Our changes to package.json are complete. Next, we need a small wrapper to export/auto-install the actual SFC, plus a minimal Rollup configuration, and we're set!
 
 ### What does my packaged component look like?
 
@@ -169,15 +170,17 @@ Notice the first line directly imports your SFC, and the last line exports it un
 With the package.json `scripts` section ready and the SFC wrapper in place, all that is left is to ensure Rollup is properly configured. Fortunately, this can be done with a small 16 line rollup.config.js file:
 
 ```js
+import commonjs from '@rollup/plugin-commonjs'; // Convert CommonJS modules to ES6
 import vue from 'rollup-plugin-vue'; // Handle .vue SFC files
-import buble from 'rollup-plugin-buble'; // Transpile/polyfill with reasonable browser support
+import buble from '@rollup/plugin-buble'; // Transpile/polyfill with reasonable browser support
 export default {
-    input: 'build/wrapper.js', // Path relative to package.json
+    input: 'src/wrapper.js', // Path relative to package.json
     output: {
         name: 'MyComponent',
         exports: 'named',
     },
     plugins: [
+        commonjs(),
         vue({
             css: true, // Dynamically inject css as a <style> tag
             compileTemplate: true, // Explicitly convert template to render function
@@ -213,4 +216,4 @@ At the time this recipe was written, Vue CLI 3 was itself in beta. This version 
 
 ## Acknowledgements
 
-This recipe is the result of a lightning talk given by [Mike Dodge](https://twitter.com/mgdodgeycode) at VueConf.us in March 2018. He has published a utility to npm which will quickly scaffold a sample SFC using this recipe. You can download the utility, [vue-sfc-rollup](https://www.npmjs.com/package/vue-sfc-rollup), from npm. You can also [clone the repo](https://github.com/team-innovation/vue-sfc-rollup) and customize it.
+This recipe is the result of a lightning talk given by [Mike Dodge](https://twitter.com/webdevdodge) at VueConf.us in March 2018. He has published a utility to npm which will quickly scaffold a sample SFC using this recipe. You can download the utility, [vue-sfc-rollup](https://www.npmjs.com/package/vue-sfc-rollup), from npm. You can also [clone the repo](https://github.com/team-innovation/vue-sfc-rollup) and customize it.

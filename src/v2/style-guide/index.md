@@ -43,9 +43,9 @@ Some features of Vue exist to accommodate rare edge cases or smoother migrations
 
 ### Multi-word component names <sup data-p="a">essential</sup>
 
-**Component names should always be multi-word, except for root `App` components.**
+**Component names should always be multi-word, except for root `App` components, and built-in components provided by Vue, such as `<transition>` or `<component>`.**
 
-This [prevents conflicts](http://w3c.github.io/webcomponents/spec/custom/#valid-custom-element-name) with existing and future HTML elements, since all HTML elements are a single word.
+This [prevents conflicts](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name) with existing and future HTML elements, since all HTML elements are a single word.
 
 {% raw %}<div class="style-example example-bad">{% endraw %}
 #### Bad
@@ -189,7 +189,7 @@ In committed code, prop definitions should always be as detailed as possible, sp
 </summary>
 {% endraw %}
 
-Detailed [prop definitions](https://vuejs.org/v2/guide/components.html#Prop-Validation) have two advantages:
+Detailed [prop definitions](/v2/guide/components.html#Prop-Validation) have two advantages:
 
 - They document the API of the component, so that it's easy to see how the component is meant to be used.
 - In development, Vue will warn you if a component is ever provided incorrectly formatted props, helping you catch potential sources of error.
@@ -331,7 +331,7 @@ When Vue processes directives, `v-for` has a higher priority than `v-if`, so tha
     :key="user.id"
   >
     {{ user.name }}
-  <li>
+  </li>
 </ul>
 ```
 
@@ -366,7 +366,7 @@ computed: {
     :key="user.id"
   >
     {{ user.name }}
-  <li>
+  </li>
 </ul>
 ```
 
@@ -386,7 +386,7 @@ We get similar benefits from updating:
     :key="user.id"
   >
     {{ user.name }}
-  <li>
+  </li>
 </ul>
 ```
 
@@ -399,7 +399,7 @@ to:
     :key="user.id"
   >
     {{ user.name }}
-  <li>
+  </li>
 </ul>
 ```
 
@@ -418,7 +418,7 @@ By moving the `v-if` to a container element, we're no longer checking `shouldSho
     :key="user.id"
   >
     {{ user.name }}
-  <li>
+  </li>
 </ul>
 ```
 
@@ -430,7 +430,7 @@ By moving the `v-if` to a container element, we're no longer checking `shouldSho
     :key="user.id"
   >
     {{ user.name }}
-  <li>
+  </li>
 </ul>
 ```
 {% raw %}</div>{% endraw %}
@@ -445,7 +445,7 @@ By moving the `v-if` to a container element, we're no longer checking `shouldSho
     :key="user.id"
   >
     {{ user.name }}
-  <li>
+  </li>
 </ul>
 ```
 
@@ -456,7 +456,7 @@ By moving the `v-if` to a container element, we're no longer checking `shouldSho
     :key="user.id"
   >
     {{ user.name }}
-  <li>
+  </li>
 </ul>
 ```
 {% raw %}</div>{% endraw %}
@@ -564,7 +564,7 @@ Beyond the `scoped` attribute, using unique class names can help ensure that 3rd
 
 ### Private property names <sup data-p="a">essential</sup>
 
-**Always use the `$_` prefix for custom private properties in a plugin, mixin, etc. Then to avoid conflicts with code by other authors, also include a named scope (e.g. `$_yourPluginName_`).**
+**Use module scoping to keep private functions inaccessible from the outside. If that's not possible, always use the `$_` prefix for custom private properties in a plugin, mixin, etc that should not be considered public API. Then to avoid conflicts with code by other authors, also include a named scope (e.g. `$_yourPluginName_`).**
 
 {% raw %}
 <details>
@@ -642,6 +642,25 @@ var myGreatMixin = {
     }
   }
 }
+```
+
+``` js
+// Even better!
+var myGreatMixin = {
+  // ...
+  methods: {
+    publicMethod() {
+      // ...
+      myPrivateFunction()
+    }
+  }
+}
+
+function myPrivateFunction() {
+  // ...
+}
+
+export default myGreatMixin
 ```
 {% raw %}</div>{% endraw %}
 
@@ -751,22 +770,6 @@ Some advantages of this convention:
 - When organized alphabetically in editors, your app's base components are all listed together, making them easier to identify.
 
 - Since component names should always be multi-word, this convention prevents you from having to choose an arbitrary prefix for simple component wrappers (e.g. `MyButton`, `VueButton`).
-
-- Since these components are so frequently used, you may want to simply make them global instead of importing them everywhere. A prefix makes this possible with Webpack:
-
-  ``` js
-  var requireComponent = require.context("./src", true, /^Base[A-Z]/)
-  requireComponent.keys().forEach(function (fileName) {
-    var baseComponentConfig = requireComponent(fileName)
-    baseComponentConfig = baseComponentConfig.default || baseComponentConfig
-    var baseComponentName = baseComponentConfig.name || (
-      fileName
-        .replace(/^.+\//, '')
-        .replace(/\.\w+$/, '')
-    )
-    Vue.component(baseComponentName, baseComponentConfig)
-  })
-  ```
 
 {% raw %}</details>{% endraw %}
 
@@ -1215,9 +1218,9 @@ props: {
 }
 ```
 
-``` html
+{% codeblock lang:html %}
 <WelcomeMessage greetingText="hi"/>
-```
+{% endcodeblock %}
 {% raw %}</div>{% endraw %}
 
 {% raw %}<div class="style-example example-good">{% endraw %}
@@ -1229,9 +1232,9 @@ props: {
 }
 ```
 
-``` html
+{% codeblock lang:html %}
 <WelcomeMessage greeting-text="hi"/>
-```
+{% endcodeblock %}
 {% raw %}</div>{% endraw %}
 
 
@@ -1334,7 +1337,7 @@ Simpler, well-named computed properties are:
 
 - __Easier to read__
 
-  Simplifying computed properties forces you to give each value a descriptive name, even if it's not reused. This makes it much easier for other developers (and future you) to focus in on the code they care about and figure out what's going on.
+  Simplifying computed properties forces you to give each value a descriptive name, even if it's not reused. This makes it much easier for other developers (and future you) to focus on the code they care about and figure out what's going on.
 
 - __More adaptable to changing requirements__
 
@@ -1414,7 +1417,7 @@ While attribute values without any spaces are not required to have quotes in HTM
 
 ### Directive shorthands <sup data-p="b">strongly recommended</sup>
 
-**Directive shorthands (`:` for `v-bind:` and `@` for `v-on:`) should be used always or never.**
+**Directive shorthands (`:` for `v-bind:`, `@` for `v-on:` and `#` for `v-slot`) should be used always or never.**
 
 {% raw %}<div class="style-example example-bad">{% endraw %}
 #### Bad
@@ -1431,6 +1434,16 @@ While attribute values without any spaces are not required to have quotes in HTM
   v-on:input="onInput"
   @focus="onFocus"
 >
+```
+
+``` html
+<template v-slot:header>
+  <h1>Here might be a page title</h1>
+</template>
+
+<template #footer>
+  <p>Here's some contact info</p>
+</template>
 ```
 {% raw %}</div>{% endraw %}
 
@@ -1463,6 +1476,26 @@ While attribute values without any spaces are not required to have quotes in HTM
   v-on:input="onInput"
   v-on:focus="onFocus"
 >
+```
+
+``` html
+<template v-slot:header>
+  <h1>Here might be a page title</h1>
+</template>
+
+<template v-slot:footer>
+  <p>Here's some contact info</p>
+</template>
+```
+
+``` html
+<template #header>
+  <h1>Here might be a page title</h1>
+</template>
+
+<template #footer>
+  <p>Here's some contact info</p>
+</template>
 ```
 {% raw %}</div>{% endraw %}
 
@@ -1563,7 +1596,6 @@ This is the default order we recommend for component options. They're split into
 6. **Unique Attributes** (attributes that require unique values)
   - `ref`
   - `key`
-  - `slot`
 
 7. **Two-Way Binding** (combining binding and events)
   - `v-model`
@@ -1703,11 +1735,11 @@ computed: {
 
 
 
-### `v-if`/`v-if-else`/`v-else` without `key` <sup data-p="d">use with caution</sup>
+### `v-if`/`v-else-if`/`v-else` without `key` <sup data-p="d">use with caution</sup>
 
 **It's usually best to use `key` with `v-if` + `v-else`, if they are the same element type (e.g. both `<div>` elements).**
 
-By default, Vue updates the DOM as efficiently as possible. That means when switching between elements of the same type, it simply patches the existing element, rather than removing it and adding a new one in its place. This can have [unintended side effects](https://jsfiddle.net/chrisvfritz/bh8fLeds/) if these elements should not actually be considered the same.
+By default, Vue updates the DOM as efficiently as possible. That means when switching between elements of the same type, it simply patches the existing element, rather than removing it and adding a new one in its place. This can have [unintended consequences](https://codesandbox.io/s/github/vuejs/v2.vuejs.org/tree/master/src/v2/examples/vue-20-priority-d-rules-unintended-consequences) if these elements should not actually be considered the same.
 
 {% raw %}<div class="style-example example-bad">{% endraw %}
 #### Bad
@@ -1739,15 +1771,6 @@ By default, Vue updates the DOM as efficiently as possible. That means when swit
   {{ results }}
 </div>
 ```
-
-``` html
-<p v-if="error">
-  Error: {{ error }}
-</p>
-<div v-else>
-  {{ results }}
-</div>
-```
 {% raw %}</div>{% endraw %}
 
 
@@ -1767,7 +1790,7 @@ Prefer class selectors over element selectors in `scoped` styles, because large 
 
 To scope styles, Vue adds a unique attribute to component elements, such as `data-v-f3f3eg9`. Then selectors are modified so that only matching elements with this attribute are selected (e.g. `button[data-v-f3f3eg9]`).
 
-The problem is that large numbers of [element-attribute selectors](http://stevesouders.com/efws/css-selectors/csscreate.php?n=1000&sel=a%5Bhref%5D&body=background%3A+%23CFD&ne=1000) (e.g. `button[data-v-f3f3eg9]`) will be considerably slower than [class-attribute selectors](http://stevesouders.com/efws/css-selectors/csscreate.php?n=1000&sel=.class%5Bhref%5D&body=background%3A+%23CFD&ne=1000) (e.g. `.btn-close[data-v-f3f3eg9]`), so class selectors should be preferred whenever possible.
+The problem is that large numbers of element-attribute selectors (e.g. `button[data-v-f3f3eg9]`) will be considerably slower than class-attribute selectors (e.g. `.btn-close[data-v-f3f3eg9]`), so class selectors should be preferred whenever possible.
 
 {% raw %}</details>{% endraw %}
 
@@ -1902,7 +1925,9 @@ Vue.component('TodoItem', {
 
 **[Vuex](https://github.com/vuejs/vuex) should be preferred for global state management, instead of `this.$root` or a global event bus.**
 
-Managing state on `this.$root` and/or using a [global event bus](https://vuejs.org/v2/guide/migration.html#dispatch-and-broadcast-replaced) can be convenient for very simple cases, but are not appropriate for most applications. Vuex offers not only a central place to manage state, but also tools for organizing, tracking, and debugging state changes.
+Managing state on `this.$root` and/or using a [global event bus](/v2/guide/migration.html#dispatch-and-broadcast-replaced) can be convenient for very simple cases, but it is not appropriate for most applications.
+
+Vuex is the [official flux-like implementation](/v2/guide/state-management.html#Official-Flux-Like-Implementation) for Vue, and offers not only a central place to manage state, but also tools for organizing, tracking, and debugging state changes. It integrates well in the Vue ecosystem (including full [Vue DevTools](/v2/guide/installation.html#Vue-Devtools) support).
 
 {% raw %}</details>{% endraw %}
 
@@ -1987,7 +2012,7 @@ export default {
   var enforcementTypes = {
     none: '<span title="There is unfortunately no way to automatically enforce this rule.">self-discipline</span>',
     runtime: 'runtime error',
-    linter: '<a href="https://github.com/vuejs/eslint-plugin-vue#eslint-plugin-vue" target="_blank">plugin:vue/recommended</a>'
+    linter: '<a href="https://github.com/vuejs/eslint-plugin-vue#eslint-plugin-vue" target="_blank" rel="noopener noreferrer">plugin:vue/recommended</a>'
   }
   Vue.component('sg-enforcement', {
     template: '\

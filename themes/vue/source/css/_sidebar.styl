@@ -2,7 +2,7 @@
 
 .sidebar
   position: absolute
-  z-index: 10
+  z-index: $z-sidebar
   top: $header-height
   left: 0
   bottom: 0
@@ -21,14 +21,12 @@
     margin-top: .5em
   .sidebar-inner
     width: 260px
-    padding: $content-padding-top + 10px 20px 60px 60px
+    padding: $content-padding-vertical 0px 60px 20px
   .version-select
     vertical-align: middle
     margin-left: 5px
   .menu-root
     padding-left: 0
-  .menu-sub
-    font-size: .85em
   .sidebar-link
     color: $light
     &.current
@@ -67,17 +65,16 @@
 @media screen and (max-width: 900px)
   .sidebar
     position: fixed
-    z-index: 10
     background-color: #f9f9f9
     height: 100%
-    top: 0
+    top: 40px
     left: 0
     box-shadow: 0 0 10px rgba(0,0,0,.2)
     transition: all .4s cubic-bezier(0.4, 0, 0, 1)
     -webkit-transform: translate(-280px, 0)
     transform: translate(-280px, 0)
     .sidebar-inner
-      padding: 50px 10px 10px 20px
+      padding: 60px 10px 30px 20px
       box-sizing: border-box
     .sidebar-inner-index
       padding: 10px 10px 10px 20px

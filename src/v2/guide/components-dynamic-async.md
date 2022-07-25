@@ -4,15 +4,21 @@ type: guide
 order: 105
 ---
 
+<script>
+const __pageRedirects = {
+  '#Async-Components': '/guide/components/async.html'
+}
+</script>
+
 > This page assumes you've already read the [Components Basics](components.html). Read that first if you are new to components.
 
 ## `keep-alive` with Dynamic Components
 
 Earlier, we used the `is` attribute to switch between components in a tabbed interface:
 
-```html
+{% codeblock lang:html %}
 <component v-bind:is="currentTabComponent"></component>
-```
+{% endcodeblock %}
 
 When switching between these components though, you'll sometimes want to maintain their state or avoid re-rendering for performance reasons. For example, when expanding our tabbed interface a little:
 
@@ -106,6 +112,7 @@ new Vue({
   background: #f0f0f0;
   margin-bottom: -1px;
   margin-right: -1px;
+  overflow-anchor: none;
 }
 .dynamic-component-demo-tab-button:hover {
   background: #e0e0e0;
@@ -193,13 +200,15 @@ new Vue({
 </script>
 {% endraw %}
 
-Now the _Posts_ tab maintains its state (the selected post) even when it's not rendered. See [this fiddle](https://jsfiddle.net/chrisvfritz/Lp20op9o/) for the complete code.
+Now the _Posts_ tab maintains its state (the selected post) even when it's not rendered. See [this example](https://codesandbox.io/s/github/vuejs/v2.vuejs.org/tree/master/src/v2/examples/vue-20-keep-alive-with-dynamic-components) for the complete code.
 
 <p class="tip">Note that `<keep-alive>` requires the components being switched between to all have names, either using the `name` option on a component, or through local/global registration.</p>
 
 Check out more details on `<keep-alive>` in the [API reference](../api/#keep-alive).
 
 ## Async Components
+
+<div class="vueschool"><a href="https://vueschool.io/lessons/dynamically-load-components?friend=vuejs" target="_blank" rel="sponsored noopener" title="Free Vue.js Async Components lesson">Watch a free video lesson on Vue School</a></div>
 
 In large applications, we may need to divide the app into smaller chunks and only load a component from the server when it's needed. To make that easier, Vue allows you to define your component as a factory function that asynchronously resolves your component definition. Vue will only trigger the factory function when the component needs to be rendered and will cache the result for future re-renders. For example:
 
@@ -225,17 +234,17 @@ Vue.component('async-webpack-example', function (resolve) {
 })
 ```
 
-You can also return a `Promise` in the factory function, so with Webpack 2 and ES2015 syntax you can do:
+You can also return a `Promise` in the factory function, so with Webpack 2 and ES2015 syntax you can make use of dynamic imports:
 
 ``` js
 Vue.component(
   'async-webpack-example',
-  // The `import` function returns a Promise.
+  // A dynamic import returns a Promise.
   () => import('./my-async-component')
 )
 ```
 
-When using [local registration](components.html#Local-Registration), you can also directly provide a function that returns a `Promise`:
+When using [local registration](components-registration.html#Local-Registration), you can also directly provide a function that returns a `Promise`:
 
 ``` js
 new Vue({
@@ -246,7 +255,7 @@ new Vue({
 })
 ```
 
-<p class="tip">If you're a <strong>Browserify</strong> user that would like to use async components, its creator has unfortunately [made it clear](https://github.com/substack/node-browserify/issues/58#issuecomment-21978224) that async loading "is not something that Browserify will ever support." Officially, at least. The Browserify community has found [some workarounds](https://github.com/vuejs/vuejs.org/issues/620), which may be helpful for existing and complex applications. For all other scenarios, we recommend using Webpack for built-in, first-class async support.</p>
+<p class="tip">If you're a <strong>Browserify</strong> user that would like to use async components, its creator has unfortunately [made it clear](https://github.com/substack/node-browserify/issues/58#issuecomment-21978224) that async loading "is not something that Browserify will ever support." Officially, at least. The Browserify community has found [some workarounds](https://github.com/vuejs/v2.vuejs.org/issues/620), which may be helpful for existing and complex applications. For all other scenarios, we recommend using Webpack for built-in, first-class async support.</p>
 
 ### Handling Loading State
 

@@ -35,7 +35,10 @@ We'll create a base icon (`IconBase.vue`) component that uses a slot.
     :aria-labelledby="iconName"
     role="presentation"
   >
-    <title :id="iconName" lang="en">{{iconName}} icon</title>
+    <title
+      :id="iconName"
+      lang="en"
+    >{{ iconName }} icon</title>
     <g :fill="iconColor">
       <slot />
     </g>
@@ -83,11 +86,19 @@ Now, if we'd like to make many sizes for the icon, we can do so very easily:
 ```html
 <p>
   <!-- you can pass in a smaller `width` and `height` as props -->
-  <icon-base width="12" height="12" icon-name="write"><icon-write /></icon-base>
+  <icon-base
+    width="12"
+    height="12"
+    icon-name="write"
+  ><icon-write /></icon-base>
   <!-- or you can use the default, which is 18 -->
   <icon-base icon-name="write"><icon-write /></icon-base>
   <!-- or make it a little bigger too :) -->
-  <icon-base width="30" height="30" icon-name="write"><icon-write /></icon-base>
+  <icon-base
+    width="30"
+    height="30"
+    icon-name="write"
+  ><icon-write /></icon-base>
 </p>
 ```
 
@@ -99,16 +110,23 @@ Keeping icons in components comes in very handy when you'd like to animate them,
 
 ```html
 <template>
-  <svg @click="startScissors"
+  <svg
+    @click="startScissors"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 100 100"
     width="100"
     height="100"
     aria-labelledby="scissors"
     role="presentation"
-    >
-    <title id="scissors" lang="en">Scissors Animated Icon</title>
-    <path id="bk" fill="#fff" d="M0 0h100v100H0z"/>
+  >
+    <title
+      id="scissors"
+      lang="en"
+    >Scissors Animated Icon</title>
+    <path
+      id="bk"
+      fill="#fff"
+      d="M0 0h100v100H0z"/>
     <g ref="leftscissor">
       <path d="M..."/>
       ...
@@ -157,7 +175,7 @@ Designers may change their minds. Product requirements change. Keeping the logic
 
 ## When To Avoid This Pattern
 
-This type of SVG icon system is really useful when you have a number of icons that are used in different ways throughout your site. If you're repeating the same icon many times on one page (e.g. a giant table a delete icon in each row), it might make more sense to have all of the sprites compiled into a sprite sheet and use `<use>` tags to load them.
+This type of SVG icon system is really useful when you have a number of icons that are used in different ways throughout your site. If you're repeating the same icon many times on one page (e.g. a giant table with a delete icon in each row), it might make more sense to have all of the sprites compiled into a sprite sheet and use `<use>` tags to load them.
 
 ## Alternative Patterns
 

@@ -4,7 +4,15 @@ type: guide
 order: 102
 ---
 
+<script>
+const __pageRedirects = {
+  '#Non-Prop-Attributes': '/guide/components/attrs.html'
+}
+</script>
+
 > This page assumes you've already read the [Components Basics](components.html). Read that first if you are new to components.
+
+<div class="vueschool"><a href="https://vueschool.io/lessons/reusable-components-with-props?friend=vuejs" target="_blank" rel="sponsored noopener" title="Learn how component props work with Vue School">Learn how component props work with a free lesson on Vue School</a></div>
 
 ## Prop Casing (camelCase vs kebab-case)
 
@@ -41,7 +49,9 @@ props: {
   likes: Number,
   isPublished: Boolean,
   commentIds: Array,
-  author: Object
+  author: Object,
+  callback: Function,
+  contactsPromise: Promise // or any other constructor
 }
 ```
 
@@ -62,7 +72,9 @@ You've also seen props assigned dynamically with `v-bind`, such as in:
 <blog-post v-bind:title="post.title"></blog-post>
 
 <!-- Dynamically assign the value of a complex expression -->
-<blog-post v-bind:title="post.title + ' by ' + post.author.name"></blog-post>
+<blog-post
+  v-bind:title="post.title + ' by ' + post.author.name"
+></blog-post>
 ```
 
 In the two examples above, we happen to pass string values, but _any_ type of value can actually be passed to a prop.
@@ -108,7 +120,12 @@ In the two examples above, we happen to pass string values, but _any_ type of va
 ```html
 <!-- Even though the object is static, we need v-bind to tell Vue that -->
 <!-- this is a JavaScript expression rather than a string.             -->
-<blog-post v-bind:author="{ name: 'Veronica', company: 'Veridian Dynamics' }"></blog-post>
+<blog-post
+  v-bind:author="{
+    name: 'Veronica',
+    company: 'Veridian Dynamics'
+  }"
+></blog-post>
 
 <!-- Dynamically assign to the value of a variable. -->
 <blog-post v-bind:author="post.author"></blog-post>
@@ -174,14 +191,14 @@ There are usually two cases where it's tempting to mutate a prop:
 
 ## Prop Validation
 
-Components can specify requirements for its props, such as the types you've already seen. If a requirement isn't met, Vue will warn you in the browser's JavaScript console. This is especially useful when developing a component that's intended to be used by others.
+Components can specify requirements for their props, such as the types you've already seen. If a requirement isn't met, Vue will warn you in the browser's JavaScript console. This is especially useful when developing a component that's intended to be used by others.
 
 To specify prop validations, you can provide an object with validation requirements to the value of `props`, instead of an array of strings. For example:
 
 ``` js
 Vue.component('my-component', {
   props: {
-    // Basic type check (`null` matches any type)
+    // Basic type check (`null` and `undefined` values will pass any type validation)
     propA: Number,
     // Multiple possible types
     propB: [String, Number],
@@ -208,7 +225,7 @@ Vue.component('my-component', {
     propF: {
       validator: function (value) {
         // The value must match one of these strings
-        return ['success', 'warning', 'danger'].indexOf(value) !== -1
+        return ['success', 'warning', 'danger'].includes(value)
       }
     }
   }
@@ -306,7 +323,7 @@ This can be especially useful in combination with the `$attrs` instance property
 
 ```js
 {
-  class: 'username-input',
+  required: true,
   placeholder: 'Enter your username'
 }
 ```
@@ -330,12 +347,15 @@ Vue.component('base-input', {
 })
 ```
 
+<p class="tip">Note that `inheritAttrs: false` option does **not** affect `style` and `class` bindings.</p>
+
 This pattern allows you to use base components more like raw HTML elements, without having to care about which element is actually at its root:
 
 ```html
 <base-input
+  label="Username:"
   v-model="username"
-  class="username-input"
+  required
   placeholder="Enter your username"
 ></base-input>
 ```

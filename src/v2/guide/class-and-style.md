@@ -7,6 +7,7 @@ order: 6
 A common need for data binding is manipulating an element's class list and its inline styles. Since they are both attributes, we can use `v-bind` to handle them: we only need to calculate a final string with our expressions. However, meddling with string concatenation is annoying and error-prone. For this reason, Vue provides special enhancements when `v-bind` is used with `class` and `style`. In addition to strings, the expressions can also evaluate to objects or arrays.
 
 ## Binding HTML Classes
+<div class="vueschool"><a href="https://vueschool.io/lessons/vuejs-dynamic-classes?friend=vuejs" target="_blank" rel="sponsored noopener" title="Free Vue.js Dynamic Classes Lesson">Watch a free video lesson on Vue School</a></div>
 
 ### Object Syntax
 
@@ -21,9 +22,10 @@ The above syntax means the presence of the `active` class will be determined by 
 You can have multiple classes toggled by having more fields in the object. In addition, the `v-bind:class` directive can also co-exist with the plain `class` attribute. So given the following template:
 
 ``` html
-<div class="static"
-     v-bind:class="{ active: isActive, 'text-danger': hasError }">
-</div>
+<div
+  class="static"
+  v-bind:class="{ active: isActive, 'text-danger': hasError }"
+></div>
 ```
 
 And the following data:

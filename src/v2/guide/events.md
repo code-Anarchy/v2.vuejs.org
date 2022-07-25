@@ -4,6 +4,8 @@ type: guide
 order: 9
 ---
 
+<div class="vueschool"><a href="https://vueschool.io/lessons/vuejs-user-events?friend=vuejs" target="_blank" rel="sponsored noopener" title="Learn how to handle events on Vue School">Learn how to handle events in a free Vue School lesson</a></div>
+
 ## Listening to Events
 
 We can use the `v-on` directive to listen to DOM events and run some JavaScript when they're triggered.
@@ -154,7 +156,9 @@ Sometimes we also need to access the original DOM event in an inline statement h
 methods: {
   warn: function (message, event) {
     // now we have access to the native event
-    if (event) event.preventDefault()
+    if (event) {
+      event.preventDefault()
+    }
     alert(message)
   }
 }
@@ -223,24 +227,32 @@ The `.passive` modifier is especially useful for improving performance on mobile
 
 ## Key Modifiers
 
-When listening for keyboard events, we often need to check for common key codes. Vue also allows adding key modifiers for `v-on` when listening for key events:
+When listening for keyboard events, we often need to check for specific keys. Vue allows adding key modifiers for `v-on` when listening for key events:
 
 ``` html
-<!-- only call `vm.submit()` when the `keyCode` is 13 -->
+<!-- only call `vm.submit()` when the `key` is `Enter` -->
+<input v-on:keyup.enter="submit">
+```
+
+You can directly use any valid key names exposed via [`KeyboardEvent.key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values) as modifiers by converting them to kebab-case.
+
+``` html
+<input v-on:keyup.page-down="onPageDown">
+```
+
+In the above example, the handler will only be called if `$event.key` is equal to `'PageDown'`.
+
+### Key Codes
+
+<p class="tip">The use of `keyCode` events [is deprecated](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode) and may not be supported in new browsers.</p>
+
+Using `keyCode` attributes is also permitted:
+
+``` html
 <input v-on:keyup.13="submit">
 ```
 
-Remembering all the `keyCode`s is a hassle, so Vue provides aliases for the most commonly used keys:
-
-``` html
-<!-- same as above -->
-<input v-on:keyup.enter="submit">
-
-<!-- also works for shorthand -->
-<input @keyup.enter="submit">
-```
-
-Here's the full list of key modifier aliases:
+Vue provides aliases for the most commonly used key codes when necessary for legacy browser support:
 
 - `.enter`
 - `.tab`
@@ -252,26 +264,14 @@ Here's the full list of key modifier aliases:
 - `.left`
 - `.right`
 
+<p class="tip">A few keys (`.esc` and all arrow keys) have inconsistent `key` values in IE9, so these built-in aliases should be preferred if you need to support IE9.</p>
+
 You can also [define custom key modifier aliases](../api/#keyCodes) via the global `config.keyCodes` object:
 
 ``` js
 // enable `v-on:keyup.f1`
 Vue.config.keyCodes.f1 = 112
 ```
-
-### Automatic Key Modifiers
-
-> New in 2.5.0+
-
-You can also directly use any valid key names exposed via [`KeyboardEvent.key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values) as modifiers by converting them to kebab-case:
-
-``` html
-<input @keyup.page-down="onPageDown">
-```
-
-In the above example, the handler will only be called if `$event.key === 'PageDown'`.
-
-<p class="tip">A few keys (`.esc` and all arrow keys) have inconsistent `key` values in IE9, their built-in aliases should be preferred if you need to support IE9.</p>
 
 ## System Modifier Keys
 
@@ -284,16 +284,16 @@ You can use the following modifiers to trigger mouse or keyboard event listeners
 - `.shift`
 - `.meta`
 
-> Note: On Macintosh keyboards, meta is the command key (⌘). On Windows keyboards, meta is the windows key (⊞). On Sun Microsystems keyboards, meta is marked as a solid diamond (◆). On certain keyboards, specifically MIT and Lisp machine keyboards and successors, such as the Knight keyboard, space-cadet keyboard, meta is labeled “META”. On Symbolics keyboards, meta is labeled “META” or “Meta”.
+> Note: On Macintosh keyboards, meta is the command key (⌘). On Windows keyboards, meta is the Windows key (⊞). On Sun Microsystems keyboards, meta is marked as a solid diamond (◆). On certain keyboards, specifically MIT and Lisp machine keyboards and successors, such as the Knight keyboard, space-cadet keyboard, meta is labeled “META”. On Symbolics keyboards, meta is labeled “META” or “Meta”.
 
 For example:
 
 ```html
 <!-- Alt + C -->
-<input @keyup.alt.67="clear">
+<input v-on:keyup.alt.67="clear">
 
 <!-- Ctrl + Click -->
-<div @click.ctrl="doSomething">Do something</div>
+<div v-on:click.ctrl="doSomething">Do something</div>
 ```
 
 <p class="tip">Note that modifier keys are different from regular keys and when used with `keyup` events, they have to be pressed when the event is emitted. In other words, `keyup.ctrl` will only trigger if you release a key while holding down `ctrl`. It won't trigger if you release the `ctrl` key alone. If you do want such behaviour, use the `keyCode` for `ctrl` instead: `keyup.17`.</p>
@@ -306,13 +306,13 @@ The `.exact` modifier allows control of the exact combination of system modifier
 
 ``` html
 <!-- this will fire even if Alt or Shift is also pressed -->
-<button @click.ctrl="onClick">A</button>
+<button v-on:click.ctrl="onClick">A</button>
 
 <!-- this will only fire when Ctrl and no other keys are pressed -->
-<button @click.ctrl.exact="onCtrlClick">A</button>
+<button v-on:click.ctrl.exact="onCtrlClick">A</button>
 
 <!-- this will only fire when no system modifiers are pressed -->
-<button @click.exact="onClick">A</button>
+<button v-on:click.exact="onClick">A</button>
 ```
 
 ### Mouse Button Modifiers

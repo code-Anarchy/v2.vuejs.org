@@ -4,6 +4,8 @@ type: guide
 order: 11
 ---
 
+<div class="vueschool"><a href="https://vueschool.io/courses/vuejs-components-fundamentals?friend=vuejs" target="_blank" rel="sponsored noopener" title="Free Vue.js Components Fundamentals Course">Watch a free video course on Vue School</a></div>
+
 ## Base Example
 
 Here's an example of a Vue component:
@@ -28,9 +30,9 @@ Components are reusable Vue instances with a name: in this case, `<button-counte
 </div>
 ```
 
-```js
+{% codeblock lang:js %}
 new Vue({ el: '#components-demo' })
-```
+{% endcodeblock %}
 
 {% raw %}
 <div id="components-demo" class="demo">
@@ -201,7 +203,7 @@ Then want to render a component for each one:
 ></blog-post>
 ```
 
-Above, you'll see that we can use `v-bind` to dynamically pass props. This is especially useful when you don't know the exact content you're going to render ahead of time, like when [fetching posts from an API](https://jsfiddle.net/chrisvfritz/sbLgr0ad).
+Above, you'll see that we can use `v-bind` to dynamically pass props. This is especially useful when you don't know the exact content you're going to render ahead of time, like when [fetching posts from an API](https://codesandbox.io/s/github/vuejs/v2.vuejs.org/tree/master/src/v2/examples/vue-20-component-blog-post-example).
 
 That's all you need to know about props for now, but once you've finished reading this page and feel comfortable with its content, we recommend coming back later to read the full guide on [Props](components-props.html).
 
@@ -268,7 +270,7 @@ Vue.component('blog-post', {
 
 Now, whenever a new property is added to `post` objects, it will automatically be available inside `<blog-post>`.
 
-## Sending Messages to Parents with Events
+## Listening to Child Components Events
 
 As we develop our `<blog-post>` component, some features may require communicating back up to the parent. For example, we may decide to include an accessibility feature to enlarge the text of blog posts, while leaving the rest of the page its default size:
 
@@ -323,15 +325,7 @@ The problem is, this button doesn't do anything:
 </button>
 ```
 
-When we click on the button, we need to communicate to the parent that it should enlarge the text of all posts. Fortunately, Vue instances provide a custom events system to solve this problem. To emit an event to the parent, we can call the built-in [**`$emit`** method](../api/#Instance-Methods-Events), passing the name of the event:
-
-```html
-<button v-on:click="$emit('enlarge-text')">
-  Enlarge text
-</button>
-```
-
-Then on our blog post, we can listen for this event with `v-on`, just as we would with a native DOM event:
+When we click on the button, we need to communicate to the parent that it should enlarge the text of all posts. Fortunately, Vue instances provide a custom events system to solve this problem. The parent can choose to listen to any event on the child component instance with `v-on`, just as we would with a native DOM event:
 
 ```html
 <blog-post
@@ -339,6 +333,16 @@ Then on our blog post, we can listen for this event with `v-on`, just as we woul
   v-on:enlarge-text="postFontSize += 0.1"
 ></blog-post>
 ```
+
+Then the child component can emit an event on itself by calling the built-in [**`$emit`** method](../api/#vm-emit), passing the name of the event:
+
+```html
+<button v-on:click="$emit('enlarge-text')">
+  Enlarge text
+</button>
+```
+
+Thanks to the `v-on:enlarge-text="postFontSize += 0.1"` listener, the parent will receive the event and update `postFontSize` value.
 
 {% raw %}
 <div id="blog-posts-events-demo" class="demo">
@@ -597,7 +601,9 @@ In the example above, `currentTabComponent` can contain either:
 - the name of a registered component, or
 - a component's options object
 
-See [this fiddle](https://jsfiddle.net/chrisvfritz/o3nycadu/) to experiment with the full code, or [this version](https://jsfiddle.net/chrisvfritz/b2qj69o1/) for an example binding to a component's options object, instead of its registered name.
+See [this example](https://codesandbox.io/s/github/vuejs/v2.vuejs.org/tree/master/src/v2/examples/vue-20-dynamic-components) to experiment with the full code, or [this version](https://codesandbox.io/s/github/vuejs/v2.vuejs.org/tree/master/src/v2/examples/vue-20-dynamic-components-with-binding) for an example binding to a component's options object, instead of its registered name.
+
+Keep in mind that this attribute can be used with regular HTML elements, however they will be treated as components, which means all attributes **will be bound as DOM attributes**. For some properties such as `value` to work as you would expect, you will need to bind them using the [`.prop` modifier](../api/#v-bind).
 
 That's all you need to know about dynamic components for now, but once you've finished reading this page and feel comfortable with its content, we recommend coming back later to read the full guide on [Dynamic & Async Components](components-dynamic-async.html).
 
@@ -627,6 +633,6 @@ It should be noted that **this limitation does _not_ apply if you are using stri
 - [Single-file (`.vue`) components](single-file-components.html)
 - [`<script type="text/x-template">`](components-edge-cases.html#X-Templates)
 
-That's all you need to know about dynamic components for now -- and actually, the end of Vue's _Essentials_. Congratulations! There's still more to learn, but first, we recommend taking a break to play with Vue yourself and build something fun.
+That's all you need to know about DOM template parsing caveats for now -- and actually, the end of Vue's _Essentials_. Congratulations! There's still more to learn, but first, we recommend taking a break to play with Vue yourself and build something fun.
 
 Once you feel comfortable with the knowledge you've just digested, we recommend coming back to read the full guide on [Dynamic & Async Components](components-dynamic-async.html), as well as the other pages in the Components In-Depth section of the sidebar.

@@ -6,33 +6,55 @@ order: 3
 
 ## Base Example
 
+<div class="vueschool"><a href="https://vueschool.io/lessons/vuejs-form-validation-diy?friend=vuejs" target="_blank" rel="sponsored noopener" title="Free Vue.js Form Validation Lesson">Watch a free lesson on Vue School</a></div>
+
 Form validation is natively supported by the browser, but sometimes different browsers will handle things in a manner which makes relying on it a bit tricky. Even when validation is supported perfectly, there may be times when custom validations are needed and a more manual, Vue-based solution may be more appropriate. Let's begin with a simple example.
 
 Given a form of three fields, make two required. Let's look at the HTML first:
 
 ``` html
-<form id="app" @submit="checkForm" action="https://vuejs.org/" method="post">
-  
+<form
+  id="app"
+  @submit="checkForm"
+  action="https://vuejs.org/"
+  method="post"
+>
+
   <p v-if="errors.length">
     <b>Please correct the following error(s):</b>
     <ul>
       <li v-for="error in errors">{{ error }}</li>
     </ul>
   </p>
-  
+
   <p>
     <label for="name">Name</label>
-    <input type="text" name="name" id="name" v-model="name">
+    <input
+      id="name"
+      v-model="name"
+      type="text"
+      name="name"
+    >
   </p>
 
   <p>
     <label for="age">Age</label>
-    <input type="number" name="age" id="age" v-model="age" min="0">
+    <input
+      id="age"
+      v-model="age"
+      type="number"
+      name="age"
+      min="0"
+    >
   </p>
 
   <p>
     <label for="movie">Favorite Movie</label>
-    <select name="movie" id="movie" v-model="movie">
+    <select
+      id="movie"
+      v-model="movie"
+      name="movie"
+    >
       <option>Star Wars</option>
       <option>Vanilla Sky</option>
       <option>Atomic Blonde</option>
@@ -40,7 +62,10 @@ Given a form of three fields, make two required. Let's look at the HTML first:
   </p>
 
   <p>
-    <input type="submit" value="Submit">  
+    <input
+      type="submit"
+      value="Submit"
+    >
   </p>
 
 </form>
@@ -48,25 +73,34 @@ Given a form of three fields, make two required. Let's look at the HTML first:
 
 Let's cover it from the top. The `<form>` tag has an ID that we'll be using for the Vue component. There's a submit handler that you'll see in a bit, and the `action` is a temporary URL that would point to something real on a server someplace (where you have backup server-side validation of course).
 
-Beneath that there is a paragraph that shows or hides itself based on an error state. This will render a simple list of errors on top of the form. Also note we fire the validation on submit rather than as every field is modified. 
+Beneath that there is a paragraph that shows or hides itself based on an error state. This will render a simple list of errors on top of the form. Also note we fire the validation on submit rather than as every field is modified.
 
 The final thing to note is that each of the three fields has a corresponding `v-model` to connect them to values we will work with in the JavaScript. Now let's look at that.
 
 ``` js
 const app = new Vue({
-  el:'#app',
-  data:{
-    errors:[],
-    name:null,
-    age:null,
-    movie:null
+  el: '#app',
+  data: {
+    errors: [],
+    name: null,
+    age: null,
+    movie: null
   },
   methods:{
-    checkForm:function(e) {
-      if(this.name && this.age) return true;
+    checkForm: function (e) {
+      if (this.name && this.age) {
+        return true;
+      }
+
       this.errors = [];
-      if(!this.name) this.errors.push("Name required.");
-      if(!this.age) this.errors.push("Age required.");
+
+      if (!this.name) {
+        this.errors.push('Name required.');
+      }
+      if (!this.age) {
+        this.errors.push('Age required.');
+      }
+
       e.preventDefault();
     }
   }
@@ -83,28 +117,48 @@ Fairly short and simple. We define an array to hold errors and set `null` values
 For the second example, the second text field (age) was switched to email which will be validated with a bit of custom logic. The code is taken from the StackOverflow question, [How to validate email address in JavaScript?](https://stackoverflow.com/questions/46155/how-to-validate-email-address-in-javascript). This is an awesome question because it makes your most intense Facebook political/religious argument look like a slight disagreement over who makes the best beer. Seriously - it's insane. Here is the HTML, even though it's really close to the first example.
 
 ``` html
-<form id="app" @submit="checkForm" action="https://vuejs.org/" method="post" novalidate="true">
-  
+<form
+  id="app"
+  @submit="checkForm"
+  action="https://vuejs.org/"
+  method="post"
+  novalidate="true"
+>
+
   <p v-if="errors.length">
     <b>Please correct the following error(s):</b>
     <ul>
       <li v-for="error in errors">{{ error }}</li>
     </ul>
   </p>
-  
+
   <p>
     <label for="name">Name</label>
-    <input type="text" name="name" id="name" v-model="name">
+    <input
+      id="name"
+      v-model="name"
+      type="text"
+      name="name"
+    >
   </p>
 
   <p>
     <label for="email">Email</label>
-    <input type="email" name="email" id="email" v-model="email">
+    <input
+      id="email"
+      v-model="email"
+      type="email"
+      name="email"
+    >
   </p>
 
   <p>
     <label for="movie">Favorite Movie</label>
-    <select name="movie" id="movie" v-model="movie">
+    <select
+      id="movie"
+      v-model="movie"
+      name="movie"
+    >
       <option>Star Wars</option>
       <option>Vanilla Sky</option>
       <option>Atomic Blonde</option>
@@ -112,7 +166,10 @@ For the second example, the second text field (age) was switched to email which 
   </p>
 
   <p>
-    <input type="submit" value="Submit">  
+    <input
+      type="submit"
+      value="Submit"
+    >
   </p>
 
 </form>
@@ -122,27 +179,34 @@ While the change here is small, note the `novalidate="true"` on top. This is imp
 
 ``` js
 const app = new Vue({
-  el:'#app',
-  data:{
-    errors:[],
-    name:null,
-    email:null,
-    movie:null
+  el: '#app',
+  data: {
+    errors: [],
+    name: null,
+    email: null,
+    movie: null
   },
-  methods:{
-    checkForm:function(e) {
+  methods: {
+    checkForm: function (e) {
       this.errors = [];
-      if(!this.name) this.errors.push("Name required.");
-      if(!this.email) {
-        this.errors.push("Email required.");
-      } else if(!this.validEmail(this.email)) {
-        this.errors.push("Valid email required.");        
+
+      if (!this.name) {
+        this.errors.push("Name required.");
       }
-      if(!this.errors.length) return true;
+      if (!this.email) {
+        this.errors.push('Email required.');
+      } else if (!this.validEmail(this.email)) {
+        this.errors.push('Valid email required.');
+      }
+
+      if (!this.errors.length) {
+        return true;
+      }
+
       e.preventDefault();
     },
-    validEmail:function(email) {
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    validEmail: function (email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     }
   }
@@ -159,8 +223,14 @@ As you can see, we've added `validEmail` as a new method and it is simply called
 For the third example, we've built something you've probably seen in survey apps. The user is asked to spend a "budget" for a set of features for a new Star Destroyer model. The total must equal 100. First, the HTML.
 
 ``` html
-<form id="app" @submit="checkForm" action="https://vuejs.org/" method="post" novalidate="true">
-  
+<form
+  id="app"
+  @submit="checkForm"
+  action="https://vuejs.org/"
+  method="post"
+  novalidate="true"
+>
+
   <p v-if="errors.length">
     <b>Please correct the following error(s):</b>
     <ul>
@@ -175,11 +245,31 @@ For the third example, we've built something you've probably seen in survey apps
   </p>
 
   <p>
-    <input type="number" name="weapons" v-model.number="weapons"> Weapons <br/>
-    <input type="number" name="shields" v-model.number="shields"> Shields <br/>
-    <input type="number" name="coffee" v-model.number="coffee"> Coffee <br/>
-    <input type="number" name="ac" v-model.number="ac"> Air Conditioning <br/>
-    <input type="number" name="mousedroids" v-model.number="mousedroids"> Mouse Droids <br/>
+    <input
+      v-model.number="weapons"
+      type="number"
+      name="weapons"
+    > Weapons <br/>
+    <input
+      v-model.number="shields"
+      type="number"
+      name="shields"
+    > Shields <br/>
+    <input
+      v-model.number="coffee"
+      type="number"
+      name="coffee"
+    > Coffee <br/>
+    <input
+      v-model.number="ac"
+      type="number"
+      name="ac"
+    > Air Conditioning <br/>
+    <input
+      v-model.number="mousedroids"
+      type="number"
+      name="mousedroids"
+    > Mouse Droids <br/>
   </p>
 
   <p>
@@ -187,7 +277,10 @@ For the third example, we've built something you've probably seen in survey apps
   </p>
 
   <p>
-    <input type="submit" value="Submit">  
+    <input
+      type="submit"
+      value="Submit"
+    >
   </p>
 
 </form>
@@ -197,29 +290,36 @@ Note the set of inputs covering the five different features. Note the addition o
 
 ``` js
 const app = new Vue({
-  el:'#app',
+  el: '#app',
   data:{
-    errors:[],
-    weapons:0,
-    shields:0,
-    coffee:0,
-    ac:0,
-    mousedroids:0
+    errors: [],
+    weapons: 0,
+    shields: 0,
+    coffee: 0,
+    ac: 0,
+    mousedroids: 0
   },
-  computed:{
-     total:function() {
-       // must parse cuz Vue turns empty value to string
-       return Number(this.weapons)+
-         Number(this.shields)+
-         Number(this.coffee)+
+  computed: {
+     total: function () {
+       // must parse because Vue turns empty value to string
+       return Number(this.weapons) +
+         Number(this.shields) +
+         Number(this.coffee) +
          Number(this.ac+this.mousedroids);
      }
   },
   methods:{
-    checkForm:function(e) {
+    checkForm: function (e) {
       this.errors = [];
-      if(this.total != 100) this.errors.push("Total must be 100!");
-      if(!this.errors.length) return true;
+
+      if (this.total != 100) {
+        this.errors.push('Total must be 100!');
+      }
+
+      if (!this.errors.length) {
+        return true;
+      }
+
       e.preventDefault();
     }
   }
@@ -233,28 +333,38 @@ We set up the total value as a computed value, and outside of that bug I ran int
 
 ## Server-side Validation
 
-In my final example, we built something that makes use of Ajax to validate at the server. The form will ask you to name a new product and will then check to ensure that the name is unique. We wrote a quick [OpenWhisk](http://openwhisk.apache.org/) serverless action to do the validation. While it isn't terribly important, here is the logic:
+In my final example, we built something that makes use of Ajax to validate at the server. The form will ask you to name a new product and will then check to ensure that the name is unique. We wrote a quick [Netlify](https://netlify.com/) serverless action to do the validation. While it isn't terribly important, here is the logic:
 
 ``` js
-function main(args) {
+exports.handler = async (event, context) => {
+  
+    const badNames = ['vista', 'empire', 'mbp'];
+    const name = event.queryStringParameters.name;
 
-    return new Promise((resolve, reject) => {
+    if (badNames.includes(name)) {
+      return { 
+        statusCode: 400,         
+        body: JSON.stringify({error: 'Invalid name passed.'}) 
+      }
+    }
 
-        // bad product names: vista, empire, mbp
-        let badNames = ['vista','empire','mbp'];
-        if(badNames.includes(args.name)) reject({error:'Existing product'});
-        resolve({status:'ok'});
-
-    });
+    return {
+      statusCode: 204
+    }
 
 }
+
 ```
 
 Basically any name but "vista", "empire", and "mbp" are acceptable. Ok, so let's look at the form.
 
 ``` html
-<form id="app" @submit="checkForm" method="post">
-  
+<form
+  id="app"
+  @submit="checkForm"
+  method="post"
+>
+
   <p v-if="errors.length">
     <b>Please correct the following error(s):</b>
     <ul>
@@ -264,11 +374,19 @@ Basically any name but "vista", "empire", and "mbp" are acceptable. Ok, so let's
 
   <p>
     <label for="name">New Product Name: </label>
-    <input type="text" name="name" id="name" v-model="name">
+    <input
+      id="name"
+      v-model="name"
+      type="text"
+      name="name"
+    >
   </p>
 
   <p>
-    <input type="submit" value="Submit">  
+    <input
+      type="submit"
+      value="Submit"
+    >
   </p>
 
 </form>
@@ -277,29 +395,30 @@ Basically any name but "vista", "empire", and "mbp" are acceptable. Ok, so let's
 There isn't anything special here. So let's go on to the JavaScript.
 
 ``` js
-const apiUrl = 'https://openwhisk.ng.bluemix.net/api/v1/web/rcamden%40us.ibm.com_My%20Space/safeToDelete/productName.json?name=';
+const apiUrl = 'https://vuecookbook.netlify.com/.netlify/functions/product-name?name=';
 
 const app = new Vue({
-  el:'#app',
-  data:{
-    errors:[],
-    name:''
+  el: '#app',
+  data: {
+    errors: [],
+    name: ''
   },
   methods:{
-    checkForm:function(e) {
+    checkForm: function (e) {
       e.preventDefault();
+
       this.errors = [];
-      if(this.name === '') {
-        this.errors.push("Product name is required.");
+
+      if (this.name === '') {
+        this.errors.push('Product name is required.');
       } else {
-        fetch(apiUrl+encodeURIComponent(this.name))
-        .then(res => res.json())
-        .then(res => {
-          if(res.error) {
-            this.errors.push(res.error);
-          } else {
-            // redirect to a new URL, or do something on success
-            alert('ok!');
+        fetch(apiUrl + encodeURIComponent(this.name))
+        .then(async res => {
+          if (res.status === 204) {
+            alert('OK');
+          } else if (res.status === 400) {
+            let errorResponse = await res.json();
+            this.errors.push(errorResponse.error);
           }
         });
       }
@@ -318,5 +437,4 @@ We start off with a variable representing the URL of the API that is running on 
 While this cookbook entry focused on doing form validation "by hand", there are, of course, some great Vue libraries that will handle a lot of this for you. Switching to a prepackage library may impact the final size of your application, but the benefits could be tremendous. You have code that is (most likely) heavily tested and also updated on a regular basis. Some examples of form validation libraries for Vue include:
 
 * [vuelidate](https://github.com/monterail/vuelidate)
-* [VeeValidate](http://vee-validate.logaretm.com/)
-
+* [VeeValidate](https://logaretm.github.io/vee-validate/)
